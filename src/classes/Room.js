@@ -22,7 +22,6 @@ import Projet3VertexShader from "../shaders/Projet3/vert.glsl"
 
 export class Room {
   constructor() {
-
     this.group = new Group()
     this.group.scale.set(0.7, 0.72, 0.7)
     this.group.position.set(0, -0.03, -0.12)
@@ -37,59 +36,63 @@ export class Room {
     }
 
     this.afterCompile = null
-
     this.allItems = []
     this.Projet3Items = []
    
     const room = ASSETS.getModel("room")
-    const video= ASSETS.getVideo("autophp")
-    const video1= ASSETS.getVideo("autorh")
-    const video2= ASSETS.getVideo("intranet")
-    const video3= ASSETS.getVideo("dashboard")
-
-
-    video.loop = true;
-    video.muted = true;
-    video.play();
-
-    const texture1 = new VideoTexture(video);
-    texture1.minFilter = LinearFilter;
-    texture1.magFilter = LinearFilter;
-    texture1.format = RGBAFormat;
-    const material1 = new MeshBasicMaterial({ map: texture1 });
-
-
-
     
-    video1.loop = true;
-    video1.muted = true;
-    video1.play();
-    const texture2 = new VideoTexture(video1);
-    texture2.minFilter = LinearFilter;
-    texture2.magFilter = LinearFilter;
-    texture2.format = RGBAFormat;
-    const material2 = new MeshBasicMaterial({ map: texture2 });
+    // ✅ RÉCUPÉRER LES VIDÉOS AVEC VÉRIFICATION
+    const video = ASSETS.getVideo("autophp")
+    const video1 = ASSETS.getVideo("autorh")
+    const video2 = ASSETS.getVideo("intranet")
+    const video3 = ASSETS.getVideo("dashboard")
 
+    // ✅ CRÉER LES MATÉRIAUX SEULEMENT SI LES VIDÉOS EXISTENT
+    let material1, material2, material3, material4;
 
-    video2.loop = true;
-    video2.muted = true;
-    video2.play();
-    const texture3 = new VideoTexture(video2);
-    texture3.minFilter = LinearFilter;
-    texture3.magFilter = LinearFilter;
-    texture3.format = RGBAFormat;
-    const material3 = new MeshBasicMaterial({ map: texture3 });
+    if (video) {
+      video.loop = true;
+      video.muted = true;
+      video.play();
+      const texture1 = new VideoTexture(video);
+      texture1.minFilter = LinearFilter;
+      texture1.magFilter = LinearFilter;
+      texture1.format = RGBAFormat;
+      material1 = new MeshBasicMaterial({ map: texture1 });
+    }
 
+    if (video1) {
+      video1.loop = true;
+      video1.muted = true;
+      video1.play();
+      const texture2 = new VideoTexture(video1);
+      texture2.minFilter = LinearFilter;
+      texture2.magFilter = LinearFilter;
+      texture2.format = RGBAFormat;
+      material2 = new MeshBasicMaterial({ map: texture2 });
+    }
 
+    if (video2) {
+      video2.loop = true;
+      video2.muted = true;
+      video2.play();
+      const texture3 = new VideoTexture(video2);
+      texture3.minFilter = LinearFilter;
+      texture3.magFilter = LinearFilter;
+      texture3.format = RGBAFormat;
+      material3 = new MeshBasicMaterial({ map: texture3 });
+    }
 
-    video3.loop = true;
-    video3.muted = true;
-    video3.play();
-    const texture4 = new VideoTexture(video3);
-    texture4.minFilter = LinearFilter;
-    texture4.magFilter = LinearFilter;
-    texture4.format = RGBAFormat;
-    const material4 = new MeshBasicMaterial({ map: texture4 });
+    if (video3) {
+      video3.loop = true;
+      video3.muted = true;
+      video3.play();
+      const texture4 = new VideoTexture(video3);
+      texture4.minFilter = LinearFilter;
+      texture4.magFilter = LinearFilter;
+      texture4.format = RGBAFormat;
+      material4 = new MeshBasicMaterial({ map: texture4 });
+    }
 
     this.group.add(room.group)
     this.scene = room.scene
@@ -115,27 +118,19 @@ export class Room {
     this.group.add(this.Projet3)
 
     room.scene.traverse((item) => {
-
-      
-        if (item.type === "Mesh" && item.name === "Cube_tableau_0005") {
-        
-          item.material = material1; // Associer le matériau 1 à cet élément
-        }
-      if (item.type === "Mesh" && item.name === "Cube_tableau_0002") {
-      
-        item.material = material2; // Associer le matériau 1 à cet élément
+      // ✅ APPLIQUER LES MATÉRIAUX VIDÉO SEULEMENT S'ILS EXISTENT
+      if (item.type === "Mesh" && item.name === "Cube_tableau_0005" && material1) {
+        item.material = material1;
       }
-
-      if (item.type === "Mesh" && item.name === "Cube_tableau_0003") {
-      
-        item.material = material3; // Associer le matériau 1 à cet élément
+      if (item.type === "Mesh" && item.name === "Cube_tableau_0002" && material2) {
+        item.material = material2;
       }
-
-      if (item.type === "Mesh" && item.name === "Cube_tableau_0004") {
-      
-        item.material = material4; // Associer le matériau 1 à cet élément
+      if (item.type === "Mesh" && item.name === "Cube_tableau_0003" && material3) {
+        item.material = material3;
       }
-
+      if (item.type === "Mesh" && item.name === "Cube_tableau_0004" && material4) {
+        item.material = material4;
+      }
 
       item.frustumCulled = false
 
